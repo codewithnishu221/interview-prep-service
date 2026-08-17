@@ -1,3 +1,28 @@
 spring:
   application:
-    name: interview.prep.service
+    name: INTERVIEW-PREP-SERVICE
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: llama3.2
+
+server:
+  port: 8085
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: 86400000
+  tavily:
+    api-key: ${TAVILY_API_KEY}
+    base-url: https://api.tavily.com
+  generation:
+    temperature: 0.4

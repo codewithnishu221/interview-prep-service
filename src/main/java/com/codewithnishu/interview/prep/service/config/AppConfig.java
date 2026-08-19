@@ -53,4 +53,9 @@ public class AppConfig {
     public RestClient userRestClient(@Qualifier("loadBalancedBuilder") RestClient.Builder builder) {
         return builder.clone().baseUrl("http://USER-SERVICE").build();
     }
+
+    @Bean("tavilyRestClient")
+    public RestClient tavilyRestClient(RestClient.Builder builder){
+        return builder.baseUrl("https://api.tavily.com").build();
+    }
 }

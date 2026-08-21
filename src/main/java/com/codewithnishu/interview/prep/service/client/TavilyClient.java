@@ -32,7 +32,7 @@ public class TavilyClient {
             String query = companyName + " " + jobTitle + "interview experience questions 2024";
             List<String> domains = List.of("geeksforgeeks.org", "leetcode.com", "ambitionbox.com", "glassdoor.com", "interviewbit.com");
             TavilySearchRequest tavilySearchRequest = new TavilySearchRequest(
-                    tavilyApiKey, query, "basic", 5, domains
+                    tavilyApiKey, query, "basic", 3, domains
             );
 
             TavilySearchResponse response = restClient.post()

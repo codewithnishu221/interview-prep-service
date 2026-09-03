@@ -9,8 +9,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -33,15 +34,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
-//    @ExceptionHandler(ResumeContentNotFoundException.class)
-//    public ResponseEntity<ApiError> contentNotFound(ResumeContentNotFoundException exception, HttpServletRequest request){
-//        String path = request.getRequestURI();
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(404, "NOT_FOUND", exception.getMessage(), LocalDateTime.now(), path));
-//    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> genericExceptions(Exception exception, HttpServletRequest request){
         log.error("Unexpected error", exception);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body( new ApiError(500, "INTERNAL_SERVER_ERROR", "An unexpected error occurred. Please try again later.", LocalDateTime.now(), request.getRequestURI()));
+    }
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public ResponseEntity<Object> handleNoResourceFound(NoResourceFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                "status", 404,
+                "error", "NOT_FOUND",
+                "message", ex.getMessage()
+        ));
     }
 
 }

@@ -18,6 +18,19 @@
             <java.version>17</java.version>
             <spring-ai.version>1.0.0-M6</spring-ai.version>
             <spring-cloud.version>2023.0.1</spring-cloud.version>
+            <sonar.organization>codewithnishu221</sonar.organization>
+            <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+            <sonar.projectKey>codewithnishu221_interview-prep-service</sonar.projectKey>
+            <sonar.coverage.jacoco.xmlReportPaths>
+                target/site/jacoco/jacoco.xml
+            </sonar.coverage.jacoco.xmlReportPaths>
+            <sonar.exclusions>
+                **/dto/**,
+                **/entity/**,
+                **/exceptions/**,
+                **/config/**,
+                **/*Application.java
+            </sonar.exclusions>
         </properties>
 
         <dependencies>
@@ -94,6 +107,18 @@
                     <type>pom</type>
                     <scope>import</scope>
                 </dependency>
+
+
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-actuator</artifactId>
+                </dependency>
+
+                <!-- Micrometer Prometheus Registry -->
+                <dependency>
+                    <groupId>io.micrometer</groupId>
+                    <artifactId>micrometer-registry-prometheus</artifactId>
+                </dependency>
             </dependencies>
         </dependencyManagement>
 
@@ -119,6 +144,36 @@
 
         <build>
             <plugins>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.11.0.3922</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.11</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <formats>
+                                    <format>HTML</format>
+                                    <format>XML</format>
+                                </formats>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
